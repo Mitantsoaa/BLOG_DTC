@@ -1,4 +1,6 @@
 <?php
+require 'autoload.php';
+
     class UserModel
     {
         public function listUser()
