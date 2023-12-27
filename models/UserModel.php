@@ -57,4 +57,19 @@ require 'autoload.php';
             }
         }
 
+        public function getUserRole($id)
+        {
+            try {
+                $pdo = DataBase::connect();
+                $sql = $pdo->prepare("SELECT id_role, role FROM users u INNER JOIN roles r ON u.id_role = roles.id_role WHERE u.id_user =".$id);
+                $sql->execute();
+                $result = $sql->fetchAll();
+                DataBase::disconnect();
+            } catch (PDOException  $e ){
+                echo "Error: ".$e;
+            }
+
+            return $result;
+        }
+
     }
