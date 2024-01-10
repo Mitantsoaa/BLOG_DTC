@@ -1,5 +1,5 @@
 <?php
-require_once 'Models/Fiches.php';
+require_once 'Models/ArticleModel.php';
 require_once 'Models/Categorie.php';
 class FichesController
 {
@@ -7,7 +7,7 @@ class FichesController
     private $categ = NULL;
 
     public function __construct() {
-        $this->fiche = new Fiches();
+        $this->article = new ArticleModel();
         $this->categ = new Categorie();
     }
 
@@ -20,7 +20,7 @@ class FichesController
         $id = isset($_GET['id']) ? $_GET['id'] : NULL;
         try {
             if ( !$op || $op == 'list' ) {
-                $this->listFiches();
+                $this->listArticles();
             } elseif ( $op == 'new') {
                 $this->saveFiche();
             } elseif ( $op == 'edit'&& $id != NULL) {
@@ -55,12 +55,33 @@ class FichesController
             $page=1;
         };
         $start_from = ($page-1) * $paginate;
-        $fiches = $this->fiche->getAllArticles($orderby, $paginate, $start_from);
-        $total = $this->fiche->paginator($paginate);
+        $fiches = $this->article->getAllArticles($orderby, $paginate, $start_from);
+        $total = $this->article->paginator($paginate);
         include "Views/list.php";
+    }
+
+    public function saveArticle() {
+        $id_user = '';
+        $id_categ = '';
+        $titre = '';
+        $desc = '';
+        $img = '';
+        $categ = $this->getAllCateg();
+
+        if ( isset($_POST['form-submitted']) ) {
+            $id_user = $_SESSION;
+            $id_categ       = isset($_POST['fiche-categorie']) ?   $_POST['fiche-categorie']  :NULL;
+            $titre      = isset($_POST['titre'])?   $_POST['titre'] :NULL;
+            $desc    = isset($_POST['description'])? $_POST['description']:NULL;
+            $img = isset($FILES['name']) ? $FILES['name'] : NULL;
+            try {
+                $this->article->addArticle($id_user, $titre, $desc, $img, $id_categ);
+                $this->redirect('index.php');
+                return;
+            } catch (Exception $exception) { echo 'Error: '. $exception->getMessage(); }
+        }
+        include 'Views/new-fiche.php';
     }
 }
 
-
-
-    ?>
+?>
