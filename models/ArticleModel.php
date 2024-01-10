@@ -49,8 +49,34 @@ require_once 'Database.php';
 
         }
 
-        public function deleteArticle($id)
+        public function deleteFiche( $id) {
+            try {
+                $pdo = DataBase::connect();
+                $stmt = $pdo->prepare(
+                    "DELETE FROM articles WHERE id_article = $id");
+                    $sql = $pdo->prepare(
+                    "DELETE FROM categ_liaison WHERE id_article = $id");
+                $stmt->execute();
+                $sql->execute();
+                DataBase::disconnect();
+            } catch (Exception $e) {
+                DataBase::disconnect();
+                throw $e;
+            }
+        }
+        public function paginator ($limit)
         {
-            
+            try {
+                $pdo = DataBase::connect();
+                $sth = $pdo->prepare("SELECT COUNT(id) FROM articles");
+                $sth->execute();
+                $result = $sth->fetchColumn();
+
+                DataBase::disconnect();
+                $total_pages = ceil($result / $limit);
+                return $total_pages;
+            } catch (PDOException  $e ){
+                echo "Error: ".$e;
+            }
         }
     }
