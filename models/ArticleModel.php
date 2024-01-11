@@ -39,17 +39,43 @@ require_once 'Database.php';
         }
         }
 
-        public function getArticleById()
+        public function getArticleById($id)
         {
-
+            try{
+                $pdo = DataBase::connect();
+                $sth = $pdo->prepare("SELECT * FROM articles WHERE id_article = $id");
+                $sth->execute();
+                $result = $sth->fetch();
+                DataBase::disconnect();
+            }catch(PDOException  $e ){
+                echo "Error: ".$e;
+            }
+            return ($result);
         }
 
-        public function updateArticle($id)
+        public function updateArticle($id,$id_user, $titre, $desc, $img, $categ)
         {
-
+            try {
+             $pdo = DataBase::connect();
+             $stmt = $pdo->prepare(
+                 "UPDATE articles SET id_user = ?, titre = ?, description = ?, img_link = ?, id_categ = ? WHERE id_article = $id");
+             $stmt->execute([$id_user, $titre, $desc, $img, $categ,$id]);
+                $del = $pdo->prepare("DELETE FROM categ_liaison WHERE id_article = $id");
+            $del->execute();
+            foreach ($id_categ as $param) {
+                $sql = $pdo->prepare("INSERT INTO categ_liaison (id_article, id_categ) VALUES (:id_article, :id_categ)");
+                $sql->bindValue(':id_article', $id);
+                $sql->bindValue(':id_categ', $categ);
+                $sql->execute();
+            }
+             DataBase::disconnect();;
+         } catch (Exception $e) {
+             DataBase::disconnect();
+             throw $e;
+         }
         }
 
-        public function deleteFiche( $id) {
+        public function deleteArticle( $id) {
             try {
                 $pdo = DataBase::connect();
                 $stmt = $pdo->prepare(
@@ -68,7 +94,7 @@ require_once 'Database.php';
         {
             try {
                 $pdo = DataBase::connect();
-                $sth = $pdo->prepare("SELECT COUNT(id) FROM articles");
+                $sth = $pdo->prepare("SELECT COUNT(id_article) FROM articles");
                 $sth->execute();
                 $result = $sth->fetchColumn();
 
