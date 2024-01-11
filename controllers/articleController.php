@@ -80,8 +80,10 @@ class FichesController
                 return;
             } catch (Exception $exception) { echo 'Error: '. $exception->getMessage(); }
         }
-        include 'Views/new-fiche.php';
+        include 'Views/new-article.php';
     }
+
+    
 }
 
 ?>
