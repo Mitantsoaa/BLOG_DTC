@@ -24,7 +24,7 @@ class FichesController
             } elseif ( $op == 'new') {
                 $this->saveFiche();
             } elseif ( $op == 'edit'&& $id != NULL) {
-                $this->editFiche($id);
+                $this->editArticle($id);
             }elseif ( $op == 'delete' && $id != NULL) {
                 $this->deleteFiche($id);
             }elseif (!$op || $op == 'listcateg') {
@@ -83,7 +83,43 @@ class FichesController
         include 'Views/new-article.php';
     }
 
-    
+    public function editArticle($id)
+    {
+        $item = $this->article->getArticleById($id);
+        $user = $item['id_user'];
+        $titre = $item['titre'];
+        $description = $item['description'];
+        $img = $item['img_link'];
+        $categ = $item['id_categ'];
+        // $id_categorie = $this->fiche->getIdCateg($id);
+        // $categ = $this->getAllCateg();
+
+        if ( isset($_POST['form-submitted']) ) {
+            $id_user      = isset($_POST['user']) ?   $_POST['user']  : NULL;
+            $id_categ       = isset($_POST['article-categorie']) ?   $_POST['article-categorie']  : NULL;
+            $titre      = isset($_POST['titre']) ?   $_POST['titre'] : NULL;
+            $descriptions    = isset($_POST['description']) ? $_POST['description'] : NULL;
+            $img    = isset($_FILES['name']) ? $_FILES['name'] : NULL;
+
+            try {
+                $this->article->updateArticle($id,$id_user, $titre, $descriptions,$img, $id_categ);
+                $this->redirect('index.php');
+                return;
+            } catch (Exception $exception) { echo 'Error: '. $exception->getMessage(); }
+        }
+        include 'Views/fiche-form.php';
+    }
+
+    public function deleteArticle($id)
+    {
+        try {
+            $this->article->deleteArticle($id);
+        } catch (Exception $exception) {
+            echo 'Error: ' . $exception->getMessage();
+        }
+        $this->redirect('index.php');
+    }
+
 }
 
 ?>
