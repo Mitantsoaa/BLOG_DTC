@@ -1,9 +1,9 @@
 <?php
 require_once 'Models/ArticleModel.php';
-require_once 'Models/Categorie.php';
+require_once 'Models/CategModel.php';
 class FichesController
 {
-    private $fiche = NULL;
+    private $article = NULL;
     private $categ = NULL;
 
     public function __construct() {
@@ -118,6 +118,12 @@ class FichesController
             echo 'Error: ' . $exception->getMessage();
         }
         $this->redirect('index.php');
+    }
+
+    public function getAllCateg()
+    {
+        $categ = $this->categ->getAllCategWithoutPagination();
+        return $categ;
     }
 
 }
