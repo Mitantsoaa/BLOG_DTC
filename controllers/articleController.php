@@ -1,7 +1,7 @@
 <?php
 require_once 'Models/ArticleModel.php';
 require_once 'Models/CategModel.php';
-class FichesController
+class articleController
 {
     private $article = NULL;
     private $categ = NULL;
