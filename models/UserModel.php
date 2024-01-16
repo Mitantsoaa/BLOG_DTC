@@ -31,14 +31,23 @@ require 'autoload.php';
             }
         }
 
-        public function updateUser($id)
+        public function updateUser($id,$name,$id_role)
         {
-
+            
         }
 
         public function removeUser($id)
         {
-
+            try {
+             $pdo = DataBase::connect();
+             $stmt = $pdo->prepare(
+                 "DELETE FROM users WHERE id_user = ?");
+             $stmt->execute([$id]);
+             DataBase::disconnect();
+         } catch (Exception $e) {
+             DataBase::disconnect();
+             throw $e;
+         }
         }
 
         public function paginator ($limit)
@@ -61,7 +70,7 @@ require 'autoload.php';
         {
             try {
                 $pdo = DataBase::connect();
-                $sql = $pdo->prepare("SELECT id_role, role FROM users u INNER JOIN roles r ON u.id_role = roles.id_role WHERE u.id_user =".$id);
+                $sql = $pdo->prepare("SELECT u.id_role, r.role role FROM users u INNER JOIN roles r ON u.id_role = roles.id_role WHERE u.id_user =".$id);
                 $sql->execute();
                 $result = $sql->fetchAll();
                 DataBase::disconnect();
