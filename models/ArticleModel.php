@@ -58,7 +58,7 @@ require_once 'Database.php';
             try {
              $pdo = DataBase::connect();
              $stmt = $pdo->prepare(
-                 "UPDATE articles SET id_user = ?, titre = ?, description = ?, img_link = ?, id_categ = ? WHERE id_article = $id");
+                 "UPDATE articles SET id_user = ?, titre = ?, description = ?, img_link = ?, id_categ = ? WHERE id_article = ?");
              $stmt->execute([$id_user, $titre, $desc, $img, $categ,$id]);
                 $del = $pdo->prepare("DELETE FROM categ_liaison WHERE id_article = $id");
             $del->execute();

@@ -15,15 +15,20 @@
         }
 
         public function getAllRoles() {
-        try {
-            $pdo = DataBase::connect();
-            $sth = $pdo->prepare("SELECT * FROM roles");
-            $sth->execute();
-            $result = $sth->fetchAll();
-            DataBase::disconnect();
-        } catch (PDOException  $e) {
-            echo "Error: " . $e;
+            try {
+                $pdo = DataBase::connect();
+                $sth = $pdo->prepare("SELECT * FROM roles");
+                $sth->execute();
+                $result = $sth->fetchAll();
+                DataBase::disconnect();
+            } catch (PDOException  $e) {
+                echo "Error: " . $e;
+            }
+                return $result;
         }
-        return $result;
-    }
+
+        public function updateRole()
+        {
+            
+        }
     }

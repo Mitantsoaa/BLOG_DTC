@@ -33,7 +33,16 @@ require 'autoload.php';
 
         public function updateUser($id,$name,$id_role)
         {
-            
+            try {
+                $pdo = DataBase::connect();
+                $stmt = $pdo->prepare(
+                 "UPDATE users SET name = ?, id_role = ? WHERE id_user = ?");
+                $stmt->execute([$name, $id_role,$id]);
+                DataBase::disconnect();
+            } catch (Exception $e) {
+                DataBase::disconnect();
+                throw $e;
+            }
         }
 
         public function removeUser($id)
