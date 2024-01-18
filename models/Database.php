@@ -20,12 +20,12 @@ class DataBase extends PDO
     {
     try
         {
-        self::$con =  new PDO( "mysql:host=".self::$dbHost.";"."dbname=".self::$dbName, self::$dbUsername, self::$dbUserPassword);
+            self::$con =  new PDO( "mysql:host=".self::$dbHost.";"."dbname=".self::$dbName, self::$dbUsername, self::$dbUserPassword);
 
         }
     catch(PDOException $e)
         {
-        die($e->getMessage());
+            die($e->getMessage());
         }
     }
     

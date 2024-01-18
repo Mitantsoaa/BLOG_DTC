@@ -26,7 +26,7 @@ class articleController
             } elseif ( $op == 'edit'&& $id != NULL) {
                 $this->editArticle($id);
             }elseif ( $op == 'delete' && $id != NULL) {
-                $this->deleteFiche($id);
+                $this->deleteArticle($id);
             }elseif (!$op || $op == 'listcateg') {
                 $this->listCateg();
             } elseif ($op == 'newcateg') {
@@ -47,7 +47,7 @@ class articleController
 
     public function listArticles() {
         $paginate = 5;
-        $orderby = isset($_GET['orderby']) ? $_GET['orderby'] : "fiche_libelle ";
+        $orderby = isset($_GET['orderby']) ? $_GET['orderby'] : "titre ";
         if (isset($_GET["page"])) {
             $page  = $_GET["page"];
         }
