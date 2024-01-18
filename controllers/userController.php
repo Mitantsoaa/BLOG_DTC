@@ -83,5 +83,17 @@ class articleController
         $item = $this->user->getUserById($id);
         $name = $item['name'];
         $id_role = $item['id_role'];
+
+        if ( isset($_POST['form-submitted']) ) {
+            $name      = isset($_POST['user-name']) ?   $_POST['user-name']  : NULL;
+            $id_role      = isset($_POST['id-role']) ?   $_POST['id-role']  : NULL;
+
+            try {
+                $this->user->updateUser($id,$name,$id_role);
+                $this->redirect('index.php');
+                return;
+            } catch (Exception $exception) { echo 'Error: '. $exception->getMessage(); }
+        }
+        include 'Views/user/user-form.php';
     }
 }
