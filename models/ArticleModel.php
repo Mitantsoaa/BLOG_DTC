@@ -2,11 +2,11 @@
 require_once 'Database.php';
     class ArticleModel
     {
-        public function getAllArticles()
+        public function getAllArticles($order = 'titre', $paginate, $start_from)
         {
             try {
                 $pdo = DataBase::connect();
-                $sql = $pdo->prepare("SELECT * FROM articles a GROUP BY a.id ORDER BY $order LIMIT $start_from, $paginate");
+                $sql = $pdo->prepare("SELECT * FROM articles a INNER JOIN users u ON a.id_user = u.id_user INNER JOIN categories c ON a.id_category = c.id_category GROUP BY a.id ORDER BY ".$order." LIMIT ".$start_from.",". $paginate);
                 $sql->execute();
                 $result = $sql->fetchAll();
                 DataBase::disconnect();

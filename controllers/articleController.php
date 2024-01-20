@@ -1,6 +1,7 @@
 <?php
 require_once 'Models/ArticleModel.php';
 require_once 'Models/CategModel.php';
+require_once 'categoryController.php';
 class articleController
 {
     private $article = NULL;
@@ -8,7 +9,7 @@ class articleController
 
     public function __construct() {
         $this->article = new ArticleModel();
-        $this->categ = new Categorie();
+        $this->categ = new categoryController();
     }
 
     public function redirect($location) {
@@ -55,9 +56,9 @@ class articleController
             $page=1;
         };
         $start_from = ($page-1) * $paginate;
-        $fiches = $this->article->getAllArticles($orderby, $paginate, $start_from);
+        $articles = $this->article->getAllArticles($orderby, $paginate, $start_from);
         $total = $this->article->paginator($paginate);
-        include "Views/list.php";
+        include "Views/home.php";
     }
 
     public function saveArticle() {
@@ -125,6 +126,8 @@ class articleController
         $categ = $this->categ->getAllCategWithoutPagination();
         return $categ;
     }
+
+    
 
 }
 
