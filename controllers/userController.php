@@ -1,7 +1,7 @@
 <?php
 require_once 'Models/UserModel.php';
 
-class articleController
+class userController
 {
     private $user = NULL;
 
@@ -22,9 +22,9 @@ class articleController
             } elseif ( $op == 'adduser') {
                 $this->saveUser();
             } elseif ( $op == 'edit'&& $id != NULL) {
-                $this->editArticle($id);
+                $this->updateUser($id);
             }elseif ( $op == 'delete' && $id != NULL) {
-                $this->deleteArticle($id);
+                $this->deleteUser($id);
             }
             else {
                 $this->showError("Page not found", "Page for operation ".$op." was not found!");
@@ -35,7 +35,7 @@ class articleController
         }
     }
 
-    public function listArticles() {
+    public function listUsers() {
         $paginate = 5;
         $orderby = isset($_GET['orderby']) ? $_GET['orderby'] : "name ";
         if (isset($_GET["page"])) {
