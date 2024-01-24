@@ -33,4 +33,29 @@ class categoryController
             $this->showError("Application error", $e->getMessage());
         }
     }
+
+    public function listCateg()
+    {
+        $paginate = 5;
+        $orderby = isset($_GET['orderby']) ? $_GET['orderby'] : "nom_categ";
+        if (isset($_GET["page"])) {
+            $page  = $_GET["page"];
+        } else {
+            $page = 1;
+        };
+        $start_from = ($page - 1) * $paginate;
+        $categ = $this->categ->getAllCateg($orderby, $paginate, $start_from);
+        $total = $this->categ->paginator($paginate);
+        include "Views/categ_list.php";
+    }
+
+    public function newCateg($nom_categ)
+    {
+
+    }
+
+    public function editCateg($id)
+    {
+        
+    }
 }

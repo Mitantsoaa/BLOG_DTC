@@ -104,4 +104,18 @@ require 'autoload.php';
             return ($result);
         }
 
+        public function authentification($email,$pass)
+        {
+            try{
+                $pdo = DataBase::connect();
+                $sth = $pdo->prepare("SELECT * FROM users WHERE id_user = $id");
+                $sth->execute();
+                $result = $sth->fetch();
+                DataBase::disconnect();
+            }catch(PDOException  $e ){
+                echo "Error: ".$e;
+            }
+            return ($result);
+        }
+
     }
